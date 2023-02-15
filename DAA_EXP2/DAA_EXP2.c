@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<time.h>
 
 void Printarr(int arr[],int n)
 {
@@ -58,22 +59,67 @@ void MergeSort(int arr[],int p,int r)
     return;
 }
 
+void QuickSort(int number[25],int first,int last){
+    int i, j, pivot, temp;
+    if(first<last){
+        pivot=first;
+        i=first;
+        j=last;
+        while(i<j){
+            while(number[i]<=number[pivot]&&i<last)
+                i++;
+            while(number[j]>number[pivot])
+                j--;
+            if(i<j){
+                temp=number[i];
+                number[i]=number[j];
+                number[j]=temp;
+            }
+        }
+        temp=number[pivot];
+        number[pivot]=number[j];
+        number[j]=temp;
+        QuickSort(number,first,j-1);
+        QuickSort(number,j+1,last);
+    }
+}
+
+void Addnnum(int arr[],int n){
+    for(int i=0;i<n;i++){
+        arr[i]=rand()%10000+1;
+    }
+}
+
 int main()
 {
-    int n;
-    printf("Enter the no. of elements in the array:");
-    scanf("%d",&n);
-    int arr[n];
-    printf("Enter elements in array:\n");
-    for(int i=0; i<n; i++)
-    {
-        scanf("%d",&arr[i]);
+    int arr[100000],a=1,b;
+    double start,end,time;
+
+    printf("Enter 1:Merge sort    2:Quick sort\n");
+    scanf("%d",&b );
+    if(b==1){
+        printf("Merge Sort:\n");
+    }
+    else{
+        printf("Quick Sort:\n");
     }
 
-    MergeSort(arr,0,n-1);
-
-    printf("\nSorted array is:\n");
-    Printarr(arr,n);
+    for(int i=1;i<1000;i++){
+        a=i*100;
+        Addnnum(arr,a);
+        if(b==1){
+            start=(double)clock();
+            MergeSort(arr,0,a-1);
+            end=(double)clock();
+        }
+        else{
+            start=(double)clock();
+            QuickSort(arr,0,a-1);
+            end=(double)clock();
+        }
+        time=(double)((end-start)/CLOCKS_PER_SEC);
+        printf("%lf\n",time);
+    }
 
     return 0;
 }
